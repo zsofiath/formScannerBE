@@ -17,4 +17,29 @@ public class PresentationController {
                 "    \"type7\":10\n" +
                 "}\n";
     }
+
+    @RequestMapping("opened-closed")
+    public String getOpenedClosedRatio() {
+        return "{\n" +
+                "    \"opened\":100,\n" +
+                "    \"closed\":10\n" +
+                "}\n";
+    }
+
+    @RequestMapping("/idle-active")
+    public String getIdleActive() {
+        return "{\n" +
+                "    \"idle\":100,\n" +
+                "    \"active\":10\n" +
+                "}\n";
+    }
+
+    @RequestMapping("/task-fields")
+    public String getTaskFields() {
+        return "{\n" +
+                "    \"field1\":100,\n" +
+                "    \"field2\":10,\n" +
+                "    \"fieldN\":200\n" +
+                "}\n";
+    }
 }
