@@ -263,5 +263,6 @@ var USAGE_PACKAGE;
         xhttp.open("Post", ENDPOINT+"save-usage", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send(JSON.stringify(USAGE_PACKAGE));
+        USAGE_PACKAGE.eventList = [];
     }
 })();
