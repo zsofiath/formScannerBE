@@ -23,6 +23,12 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    compile "org.springframework.integration:spring-integration-jdbc:5.4.1"
+    implementation 'org.springframework.boot:spring-boot-starter-integration'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.integration:spring-integration-test'
 }
 
 test {
