@@ -29,6 +29,7 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.integration:spring-integration-test'
+    implementation 'org.json:json:20171018'
 }
 
 test {

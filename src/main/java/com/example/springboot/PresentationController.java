@@ -18,21 +18,18 @@ public class PresentationController {
         Integer first = simplePair.getKey(); // 42
         String second = simplePair.getValue(); // "Second"
 
-        new JSONArray()
+        String response = new JSONArray()
                 .put(new JSONObject().put("name", "cases")
                         .put("value", 23))
-                .put(new JSONObject()
-                        .put("name", "revenue")
-                        .put("value", 34))
-                .put(new JSONObject()
-                        .put("name", "1D5")
-                        .put("value", 56))
-                .put(new JSONObject()
-                        .put("name", "diag")
-                        .put("value", 14))
                 .toString();
 
-        return "{\n" +
+        return new JSONObject()
+                .put("type1", 11)
+                .put("type2", 55)
+                .put("name", "cases")
+                .put("name", "cases")
+                .toString();
+        /*"{\n" +
                 "    \"type1\":100,\n" +
                 "    \"type2\":10,\n" +
                 "    \"type3\":200,\n" +
@@ -40,7 +37,7 @@ public class PresentationController {
                 "    \"type5\":10,\n" +
                 "    \"type6\":10,\n" +
                 "    \"type7\":10\n" +
-                "}\n";
+                "}\n";*/
     }
 
     @RequestMapping("opened-closed")
