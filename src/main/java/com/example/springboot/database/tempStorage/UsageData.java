@@ -1,4 +1,4 @@
-package com.example.springboot.database;
+package com.example.springboot.database.tempStorage;
 
 
 import javax.persistence.Id;

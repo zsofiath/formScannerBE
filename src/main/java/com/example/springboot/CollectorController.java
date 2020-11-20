@@ -2,7 +2,7 @@ package com.example.springboot;
 
 import com.example.springboot.Model.http.EventPackage;
 import com.example.springboot.Model.http.UsagePackage;
-import com.example.springboot.database.UsageData;
+import com.example.springboot.database.tempStorage.UsageData;
 import com.example.springboot.database.UsageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;

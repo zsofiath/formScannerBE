@@ -30,6 +30,7 @@ dependencies {
     }
     testImplementation 'org.springframework.integration:spring-integration-test'
     implementation 'org.json:json:20171018'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 test {

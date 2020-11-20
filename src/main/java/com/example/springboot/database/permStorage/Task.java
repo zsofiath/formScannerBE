@@ -1,4 +1,4 @@
-package com.example.springboot.database;
+package com.example.springboot.database.permStorage;
 
 import javax.persistence.*;
 import java.util.Date;

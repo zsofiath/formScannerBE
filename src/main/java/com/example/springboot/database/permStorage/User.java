@@ -1,4 +1,4 @@
-package com.example.springboot.database;
+package com.example.springboot.database.permStorage;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,11 +6,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class TaskType {
+public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
-    private  String taskTypeName;
+    private String username;
 
     public int getId() {
         return id;
@@ -20,11 +20,13 @@ public class TaskType {
         this.id = id;
     }
 
-    public String getTaskTypeName() {
-        return taskTypeName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setTaskTypeName(String taskTypeName) {
-        this.taskTypeName = taskTypeName;
+    public void setUsername(String username) {
+        this.username = username;
     }
+
+
 }
