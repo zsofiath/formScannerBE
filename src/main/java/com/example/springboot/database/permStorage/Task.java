@@ -6,8 +6,7 @@ import java.util.Date;
 @Entity
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private String id;
     @ManyToOne
     private User user;
     @ManyToOne
@@ -15,13 +14,13 @@ public class Task {
     private Date startTime;
     private Date endTime;
     private int activeMinutes;
-    private int idleMinutes;
+    private double idleMinutes;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -65,11 +64,11 @@ public class Task {
         this.activeMinutes = activeMinutes;
     }
 
-    public int getIdleMinutes() {
+    public double getIdleMinutes() {
         return idleMinutes;
     }
 
-    public void setIdleMinutes(int idleMinutes) {
+    public void setIdleMinutes(double idleMinutes) {
         this.idleMinutes = idleMinutes;
     }
 }

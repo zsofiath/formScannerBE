@@ -6,12 +6,17 @@ import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity
 public class UsageData {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
+    private String taskId;
     private String element;
     private String event;
     private int element_x;
@@ -22,7 +27,7 @@ public class UsageData {
     private int document_y;
     private int document_width;
     private int documents_height;
-    private String timestamp;
+    private Date timestamp;
     private String username;
     private String task_type;
 
@@ -32,6 +37,14 @@ public class UsageData {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
     public String getElement() {
@@ -114,14 +127,21 @@ public class UsageData {
         this.documents_height = documents_height;
     }
 
-    public String getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+    public void setTimestamp(String timestamp) throws ParseException {
+        this.timestamp = createDate(timestamp);
     }
+    private Date createDate(String str) throws ParseException {
+        String[] strArray = str.split("T", 2);
+        DateFormat format = new SimpleDateFormat("YYYY-MM-dd kk:mm:ss.S");
+        Date date = format.parse(strArray[0]+" "+strArray[1]);
+        System.out.println(date);
 
+        return date;
+    }
     public String getUsername() {
         return username;
     }

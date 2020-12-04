@@ -11,12 +11,12 @@ public class UsagePackage {
         this.userName = userName;
     }
 
-    public String getTaskIi() {
-        return taskIi;
+    public String getTaskId() {
+        return taskId;
     }
 
-    public void setTaskIi(String taskIi) {
-        this.taskIi = taskIi;
+    public void setTaskIi(String taskId) {
+        this.taskId = taskId;
     }
 
     public String getTaskType() {
@@ -36,7 +36,7 @@ public class UsagePackage {
     }
 
     private String userName;
-    private String taskIi;
+    private String taskId;
     private String taskType;
 
     private List<EventPackage> eventList;

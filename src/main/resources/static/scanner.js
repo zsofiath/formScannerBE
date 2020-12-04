@@ -28,7 +28,8 @@ var USAGE_PACKAGE;
     this.screenPosition = {x: null, y: null};
     this.documentPosition = {x: null, y: null};
     this.documentSize = {width: null, heigth: null};
-    this.dateTime = new Date();
+    var d = new Date;
+    this.dateTime = d;
     };
 
     UsagePackage.prototype.AddEventPackage = function () {
@@ -116,6 +117,7 @@ var USAGE_PACKAGE;
         .setElementName("document")
         .setDocumentWidth(window.width)
         .setDocumentHeight(window.height);
+        console.log("onfocus");
     }; 
 
     // Host software in background
@@ -126,6 +128,7 @@ var USAGE_PACKAGE;
         .setElementName("document")
         .setDocumentWidth(window.width)
         .setDocumentHeight(window.height);
+        console.log("onblur");
     }; 
 
     // mouse move
@@ -157,11 +160,13 @@ var USAGE_PACKAGE;
             .AddEventPackage()
             .setEvent("visible")
             .setElementName("document");
+            console.log("visible");
         } else {
             USAGE_PACKAGE
             .AddEventPackage()
             .setEvent("idle")
             .setElementName("document");
+            console.log("idle");
         }
     });
 
@@ -200,12 +205,10 @@ var USAGE_PACKAGE;
     }
 
     function getHtmlElementName(htmlElement) {
-        console.dir(htmlElement);
         return htmlElement.attributes.formcontrolname.textContent;
     }
 
     function getHtmlElementId(htmlElement) {
-        console.log(getPathTo(htmlElement));
         return getPathTo(htmlElement);
     }
 

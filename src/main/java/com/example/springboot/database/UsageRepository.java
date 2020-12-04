@@ -1,8 +1,19 @@
 package com.example.springboot.database;
 
 import com.example.springboot.database.tempStorage.UsageData;
+import javafx.util.Pair;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+
+import java.util.Date;
+import java.util.List;
 
 public interface UsageRepository extends CrudRepository<UsageData, Integer> {
+    @Query(value = "SELECT task_id, MIN(timestamp) as min, MAX(timestamp) as max FROM temp_storage.usage_data GROUP BY task_id", nativeQuery = true)
+    public List<Object[]> getStartEndAndTime();
+
+    @Query(value = "SELECT * FROM temp_storage.usage_data where task_id = :taskid AND event in('visible', 'onfocus','idle','onblur')", nativeQuery = true)
+    public List<UsageData> getTaskActions(@Param("taskid") String taskid);
 
 }

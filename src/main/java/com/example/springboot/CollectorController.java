@@ -2,25 +2,29 @@ package com.example.springboot;
 
 import com.example.springboot.Model.http.EventPackage;
 import com.example.springboot.Model.http.UsagePackage;
+import com.example.springboot.database.permStorage.TaskRepository;
 import com.example.springboot.database.tempStorage.UsageData;
 import com.example.springboot.database.UsageRepository;
+import com.example.springboot.transformation.Transformation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
 
 @RestController
 public class CollectorController {
     @Autowired
+    private TaskRepository taskRepository;
+    @Autowired
     private UsageRepository usageRepository;
     @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
     @PostMapping(path = "/save-usage", consumes = "application/json", produces = "application/json")
-    public String addMember(@RequestBody UsagePackage upackage) {
+    public String addMember(@RequestBody UsagePackage upackage) throws ParseException {
 
         for (EventPackage event :
                 upackage.getEventList()) {
             UsageData usageData = new UsageData();
+            usageData.setTaskId(upackage.getTaskId());
             usageData.setUsername(upackage.getUserName());
             usageData.setTask_type(upackage.getTaskType());
             usageData.setDocument_width(event.getDocumentSize().getWidth());
@@ -33,9 +37,16 @@ public class CollectorController {
             usageData.setScreen_y(event.getScreenPosition().getY());
             usageData.setElement_x(event.getElementPosition().getX());
             usageData.setElement_y(event.getElementPosition().getY());
-            usageData.setTimestamp(event.getTimestamp());
+            usageData.setTimestamp(event.getDateTime());
             usageRepository.save(usageData);
         }
+        return "";
+    }
+
+    @RequestMapping(path = "/t")
+    public String transform() throws ParseException {
+        Transformation T = new Transformation(usageRepository, taskRepository);
+        T.createTasks();
         return "";
     }
 }

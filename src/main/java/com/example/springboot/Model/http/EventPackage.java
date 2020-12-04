@@ -57,11 +57,11 @@ public class EventPackage {
         this.documentSize = documentSize;
     }
 
-    public String getTimestamp() {
+    public String getDateTime() {
         return dateTime;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setDateTime(String timestamp) {
         this.dateTime = timestamp;
     }
 }
