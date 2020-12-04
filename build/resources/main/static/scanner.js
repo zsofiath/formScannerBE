@@ -120,7 +120,7 @@ var USAGE_PACKAGE;
         .setElementName("document")
         .setDocumentWidth(window.width)
         .setDocumentHeight(window.height);
-        console.log("onfocus");
+        
     }; 
 
     // Host software in background
@@ -131,7 +131,7 @@ var USAGE_PACKAGE;
         .setElementName("document")
         .setDocumentWidth(window.width)
         .setDocumentHeight(window.height);
-        console.log("onblur");
+        
     }; 
 
     // mouse move
@@ -163,13 +163,13 @@ var USAGE_PACKAGE;
             .AddEventPackage()
             .setEvent("visible")
             .setElementName("document");
-            console.log("visible");
+            
         } else {
             USAGE_PACKAGE
             .AddEventPackage()
             .setEvent("idle")
             .setElementName("document");
-            console.log(USAGE_PACKAGE);
+            
         }
     });
 
@@ -269,7 +269,7 @@ var USAGE_PACKAGE;
         xhttp.open("Post", ENDPOINT+"save-usage", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send(JSON.stringify(USAGE_PACKAGE));
-        console.log(JSON.stringify(USAGE_PACKAGE))
+        
         USAGE_PACKAGE.eventList = [];
     }
 })();
