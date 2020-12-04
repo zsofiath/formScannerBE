@@ -29,6 +29,9 @@ var USAGE_PACKAGE;
     this.documentPosition = {x: null, y: null};
     this.documentSize = {width: null, heigth: null};
     var d = new Date;
+    let hoursDiff = d.getHours() - d.getTimezoneOffset() / 60;
+    d.setHours(hoursDiff);
+
     this.dateTime = d;
     };
 
@@ -117,7 +120,7 @@ var USAGE_PACKAGE;
         .setElementName("document")
         .setDocumentWidth(window.width)
         .setDocumentHeight(window.height);
-        console.log("onfocus");
+        
     }; 
 
     // Host software in background
@@ -128,7 +131,7 @@ var USAGE_PACKAGE;
         .setElementName("document")
         .setDocumentWidth(window.width)
         .setDocumentHeight(window.height);
-        console.log("onblur");
+        
     }; 
 
     // mouse move
@@ -160,13 +163,13 @@ var USAGE_PACKAGE;
             .AddEventPackage()
             .setEvent("visible")
             .setElementName("document");
-            console.log("visible");
+            
         } else {
             USAGE_PACKAGE
             .AddEventPackage()
             .setEvent("idle")
             .setElementName("document");
-            console.log("idle");
+            
         }
     });
 
@@ -266,6 +269,7 @@ var USAGE_PACKAGE;
         xhttp.open("Post", ENDPOINT+"save-usage", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send(JSON.stringify(USAGE_PACKAGE));
+        
         USAGE_PACKAGE.eventList = [];
     }
 })();

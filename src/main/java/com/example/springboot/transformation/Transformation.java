@@ -40,7 +40,7 @@ public class Transformation {
             double idleTime = 0;
             List<UsageData> usages = usageRepository.getTaskActions((String)dateRow[0]);
             for (int i = 0; i < usages.size()-4; i++) {
-                if(isIdle(usages, i)){
+                if(isIdle(usages, i)) {
                     idleTime += computeIdleMinutes((UsageData)usages.get(i+1), (UsageData)usages.get(i+2));
                 }
             }

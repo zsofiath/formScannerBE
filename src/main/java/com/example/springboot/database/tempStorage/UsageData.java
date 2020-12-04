@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 @Entity
 public class UsageData {
@@ -137,8 +138,8 @@ public class UsageData {
     private Date createDate(String str) throws ParseException {
         String[] strArray = str.split("T", 2);
         DateFormat format = new SimpleDateFormat("YYYY-MM-dd kk:mm:ss.S");
+        format.setTimeZone(TimeZone.getTimeZone("Europe/Budapest"));
         Date date = format.parse(strArray[0]+" "+strArray[1]);
-        System.out.println(date);
 
         return date;
     }

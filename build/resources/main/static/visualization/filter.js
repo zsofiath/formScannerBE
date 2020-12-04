@@ -19,3 +19,18 @@ for (let index = 0; index < 12; index++) {
     });
     buttonBox2.appendChild(btn);
 }
+
+function http(){
+    var xhttp = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            alert(xhr.responseText);
+        }
+    }
+
+    xhttp.open("GET", ENDPOINT+"save-usage", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify(USAGE_PACKAGE));
+    USAGE_PACKAGE.eventList = [];
+}

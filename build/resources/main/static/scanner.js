@@ -29,6 +29,9 @@ var USAGE_PACKAGE;
     this.documentPosition = {x: null, y: null};
     this.documentSize = {width: null, heigth: null};
     var d = new Date;
+    let hoursDiff = d.getHours() - d.getTimezoneOffset() / 60;
+    d.setHours(hoursDiff);
+
     this.dateTime = d;
     };
 
@@ -166,7 +169,7 @@ var USAGE_PACKAGE;
             .AddEventPackage()
             .setEvent("idle")
             .setElementName("document");
-            console.log("idle");
+            console.log(USAGE_PACKAGE);
         }
     });
 
@@ -266,6 +269,7 @@ var USAGE_PACKAGE;
         xhttp.open("Post", ENDPOINT+"save-usage", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send(JSON.stringify(USAGE_PACKAGE));
+        console.log(JSON.stringify(USAGE_PACKAGE))
         USAGE_PACKAGE.eventList = [];
     }
 })();

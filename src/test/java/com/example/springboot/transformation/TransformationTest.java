@@ -1,14 +1,23 @@
 package com.example.springboot.transformation;
 
+import com.example.springboot.database.UsageRepository;
 import com.example.springboot.database.permStorage.Task;
+import com.example.springboot.database.permStorage.TaskRepository;
 import com.example.springboot.database.tempStorage.UsageData;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.xml.crypto.dsig.Transform;
 import java.text.DateFormat;
@@ -19,88 +28,41 @@ import java.util.Date;
 import java.util.List;
 
 class TransformationTest {
-  /*  List<UsageData> usageData;
-    Transformation transform;
+    /*@Mock
+    @InjectMocks
+    private TestUsageRepo usageRepository;
+    @Mock
+    private TaskRepository taskRepository;*/
 
-    @BeforeClass
-    void preloadTest(){
-        UsageData d1 = new UsageData();
-        d1.setTimestamp("2020-12-03T13:57:07.755Z");
 
-        UsageData d2 = new UsageData();
-        d1.setTimestamp("2020-12-03T14:57:07.755Z");
-
-        usageData = new ArrayList<>();
-
-        usageData.add(d1);
-        usageData.add(d2);
-
-        transform = new Transformation(usageData);
-    }
-
+/*
     @Test
-    void saveFields() {
-    }
-
-    @Test
-    void saveFieldEvents() {
-    }
-
-    @Test
-    void saveMouseStroke() {
-    }
-
-    @Test
-    void createTasks_createTaskByTaskID() {
-        usageData = new ArrayList<>();
-        UsageData d1 = new UsageData();
-        d1.setId("d");
-        d1.setTimestamp("2020-12-03T13:57:07.755Z");
-
-        UsageData d2 = new UsageData();
-        d2.setId("e");
-        d2.setTimestamp("2020-12-03T14:57:07.755Z");
-
-        usageData.add(d1);
-        usageData.add(d2);
-
-        transform = new Transformation(usageData);
-        List<Task> tasks = transform.createTasks();
-
-        Assert.assertEquals(2, tasks.size());
-    }
-
-    @Test
-    void createTasks_oneTaskWithProperties() throws ParseException {
-        usageData = new ArrayList<>();
-        UsageData d1 = new UsageData();
-        d1.setId("d");
-        d1.setTimestamp("2020-12-03T13:57:07.755Z");
-
-        UsageData d2 = new UsageData();
-        d2.setId("d");
-        d1.setTimestamp("2020-12-03T14:57:07.755Z");
-
-        usageData.add(d1);
-        usageData.add(d2);
-
-        transform = new Transformation(usageData);
-        List<Task> tasks = transform.createTasks();
-
-
-        String string = "2020-12-03 14:57:07.755Z";
+    public void createTasks() throws ParseException {
+        List<Object[]> res1 = new ArrayList<>();
         DateFormat format = new SimpleDateFormat("YYYY-MM-dd kk:mm:ss.S");
-        Date date = format.parse(string);
-        System.out.println(date);
+        Date date = format.parse("2020-12-04 10:00:00.0");
+        Date date2 = format.parse("2020-12-04 10:10:00.0");
+        res1.add(new Object[]{ "a", date, date2 });
 
-        Assert.assertEquals(date, tasks.get(0).getStartTime());
-    }
+        Task T = new Task();
 
-    @Test
-    void saveTaskTypes() {
-    }
 
-    @Test
-    void saveUser() {
+        Mockito.when(usageRepository.getStartEndAndTime()).thenReturn(res1);
+
+        Transformation TRANSFORM = new Transformation(usageRepository, taskRepository);
+        Mockito.when(taskRepository.save(any(Task.class))).thenAnswer(new Answer<Task>() {
+            @Override
+            public Task answer(InvocationOnMock invocation) throws Throwable {
+                return null;
+            }
+        });
+
+        Task t = Mockito.when(taskRepository.save(Mockito.any(Task.class)))
+                .thenAnswer(task ->  task).getMock();
+
+        TRANSFORM.createTasks();
+
+        Assert.assertEquals(null, t);
+
     }*/
 }
