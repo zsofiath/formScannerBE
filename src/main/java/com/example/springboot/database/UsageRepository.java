@@ -16,4 +16,6 @@ public interface UsageRepository extends CrudRepository<UsageData, Integer> {
     @Query(value = "SELECT * FROM temp_storage.usage_data where task_id = :taskid AND event in('visible', 'onfocus','idle','onblur')", nativeQuery = true)
     public List<UsageData> getTaskActions(@Param("taskid") String taskid);
 
+    @Query(value = "SELECT task_type, element FROM temp_storage.usage_data where task_id = :taskid AND event in('click', 'blur', 'change', 'keyup', 'Empty', 'Backspace', 'Delete', 'Typing') group by task_type, element", nativeQuery = true)
+    public List<Object[]> getTaskActions_inputEvents(@Param("taskid") String taskid);
 }

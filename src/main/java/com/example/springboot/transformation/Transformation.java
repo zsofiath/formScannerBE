@@ -5,6 +5,7 @@ import com.example.springboot.database.permStorage.*;
 import com.example.springboot.database.returnData;
 import com.example.springboot.database.tempStorage.UsageData;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,19 +20,36 @@ public class Transformation {
     private TaskRepository taskRepository;
     private UserRepository userRepository;
     private TaskTypeRepository taskTypeRepository;
+    private FieldRepository fieldRepository;
 
-    public Transformation(UsageRepository usageRepository, TaskRepository taskRepository, UserRepository userRepository, TaskTypeRepository taskTypeRepository) {
+    public Transformation(UsageRepository usageRepository,
+                          TaskRepository taskRepository,
+                          UserRepository userRepository,
+                          TaskTypeRepository taskTypeRepository,
+                          FieldRepository fieldRepository) {
         this.usageRepository = usageRepository;
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
         this.taskTypeRepository = taskTypeRepository;
+        this.fieldRepository = fieldRepository;
     }
     //public List<FieldEvent> createFieldEvents(){}
-    //public List<Field> createFields(){}
-    //public List<MouseStroke> createMouseStroke(){}
-    public List<Task> createTasks() throws ParseException {
-        List<Task> taskList = new ArrayList<>();
+    public void createFields(String taskID) {
+        List<Object[]> usages = usageRepository.getTaskActions_inputEvents(taskID);
+        for (Object[] row : usages) {
+           Field f = fieldRepository.findBy((String)row[1], (String)row[0]);
+           if(f == null) {
+               Field ff = new Field();
+               ff.setFieldName((String)row[1]);
+               ff.setTaskType(taskTypeRepository.findByName((String)row[0]));
 
+               fieldRepository.save(ff);
+           }
+
+        }
+    }
+    //public List<MouseStroke> createMouseStroke(){}
+    public void createTasks() throws ParseException {
         List<Object[]> dates = usageRepository.getStartEndAndTime();
         for (Object[] dateRow :
                 dates) {
@@ -42,7 +60,9 @@ public class Transformation {
             T.setTaskType(taskTypeRepository.findByName((String)dateRow[3]));
             T.setUser(userRepository.findByName((String)dateRow[4]));
 
-            
+
+            createFields((String)dateRow[0]);
+
             double idleTime = 0;
             List<UsageData> usages = usageRepository.getTaskActions((String)dateRow[0]);
             for (int i = 0; i < usages.size()-4; i++) {
@@ -55,7 +75,6 @@ public class Transformation {
             taskRepository.save(T);
         }
 
-        return taskList;
     }
 
     private double computeIdleMinutes(UsageData idleStartEvent, UsageData idleEndEvent) {
