@@ -37,7 +37,7 @@ public class Transformation {
     public void createFields(String taskID) {
         List<Object[]> usages = usageRepository.getTaskActions_inputEvents(taskID);
         for (Object[] row : usages) {
-           Field f = fieldRepository.findBy((String)row[1], (String)row[0]);
+           Field f = fieldRepository.findBy((String)row[1], taskTypeRepository.findByName((String)row[0]).getId());
            if(f == null) {
                Field ff = new Field();
                ff.setFieldName((String)row[1]);
