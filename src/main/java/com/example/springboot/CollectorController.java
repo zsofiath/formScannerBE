@@ -3,6 +3,9 @@ package com.example.springboot;
 import com.example.springboot.Model.http.EventPackage;
 import com.example.springboot.Model.http.UsagePackage;
 import com.example.springboot.database.permStorage.TaskRepository;
+import com.example.springboot.database.permStorage.TaskType;
+import com.example.springboot.database.permStorage.TaskTypeRepository;
+import com.example.springboot.database.permStorage.UserRepository;
 import com.example.springboot.database.tempStorage.UsageData;
 import com.example.springboot.database.UsageRepository;
 import com.example.springboot.transformation.Transformation;
@@ -15,6 +18,10 @@ import java.text.ParseException;
 public class CollectorController {
     @Autowired
     private TaskRepository taskRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private TaskTypeRepository taskTypeRepository;
     @Autowired
     private UsageRepository usageRepository;
     @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
@@ -45,7 +52,7 @@ public class CollectorController {
 
     @RequestMapping(path = "/t")
     public String transform() throws ParseException {
-        Transformation T = new Transformation(usageRepository, taskRepository);
+        Transformation T = new Transformation(usageRepository, taskRepository, userRepository, taskTypeRepository);
         T.createTasks();
         return "";
     }

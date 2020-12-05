@@ -17,10 +17,14 @@ public class Transformation {
 
     private UsageRepository usageRepository;
     private TaskRepository taskRepository;
+    private UserRepository userRepository;
+    private TaskTypeRepository taskTypeRepository;
 
-    public Transformation(UsageRepository usageRepository, TaskRepository taskRepository) {
+    public Transformation(UsageRepository usageRepository, TaskRepository taskRepository, UserRepository userRepository, TaskTypeRepository taskTypeRepository) {
         this.usageRepository = usageRepository;
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
+        this.taskTypeRepository = taskTypeRepository;
     }
     //public List<FieldEvent> createFieldEvents(){}
     //public List<Field> createFields(){}
@@ -35,6 +39,8 @@ public class Transformation {
             T.setId((String)dateRow[0]);
             T.setStartTime((Date)dateRow[1]);
             T.setEndTime((Date)dateRow[2]);
+            T.setTaskType(taskTypeRepository.findByName((String)dateRow[3]));
+            T.setUser(userRepository.findByName((String)dateRow[4]));
 
             
             double idleTime = 0;
@@ -45,14 +51,19 @@ public class Transformation {
                 }
             }
             T.setIdleMinutes(idleTime);
+            T.setActiveMinutes((int)(computeActiveMinutes((Date)dateRow[1], (Date)dateRow[2]) - idleTime));
             taskRepository.save(T);
         }
 
         return taskList;
     }
 
-    private double computeIdleMinutes(UsageData idleStartEvent, UsageData idleEndEvent){
+    private double computeIdleMinutes(UsageData idleStartEvent, UsageData idleEndEvent) {
         return s_to_min(ms_to_s(idleEndEvent.getTimestamp().getTime() - idleStartEvent.getTimestamp().getTime()));
+    }
+
+    private double computeActiveMinutes(Date date1, Date date2) {
+        return Math.round(s_to_min(ms_to_s(date2.getTime() - date1.getTime())));
     }
 
     private double ms_to_s(double ms){

@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface UsageRepository extends CrudRepository<UsageData, Integer> {
-    @Query(value = "SELECT task_id, MIN(timestamp) as min, MAX(timestamp) as max FROM temp_storage.usage_data GROUP BY task_id", nativeQuery = true)
+    @Query(value = "SELECT task_id, MIN(timestamp) as min, MAX(timestamp) as max, task_type, username FROM temp_storage.usage_data GROUP BY task_id, task_type, username", nativeQuery = true)
     public List<Object[]> getStartEndAndTime();
 
     @Query(value = "SELECT * FROM temp_storage.usage_data where task_id = :taskid AND event in('visible', 'onfocus','idle','onblur')", nativeQuery = true)
