@@ -8,7 +8,7 @@ const ENDPOINT = "http://localhost:8080/";
 
 
 for(var i = 0; i < userButtons.length; i++){
-    var element = userButtons[i];
+    let element = userButtons[i];
     element.addEventListener('click', function(){
         if(users.includes(element.innerHTML)) {
             users.splice(users.indexOf(element.innerHTML), 1);
@@ -22,7 +22,7 @@ for(var i = 0; i < userButtons.length; i++){
 }
 
 for(var i = 0; i < typeButtons.length; i++){
-    var element = typeButtons[i];
+    let element = typeButtons[i];
     element.addEventListener('click', function(){
         if(types.includes(element.innerHTML)) {
             types.splice(types.indexOf(element.innerHTML), 1);
@@ -47,7 +47,7 @@ function http1(){
 
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == XMLHttpRequest.DONE) {
-            alert(xhttp.responseText);
+            //alert(xhttp.responseText);
         }
     }
 
@@ -61,7 +61,7 @@ function http2(){
 
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == XMLHttpRequest.DONE) {
-            alert(xhttp.responseText);
+            //alert(xhttp.responseText);
         }
     }
 
@@ -75,7 +75,7 @@ function http3(){
 
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == XMLHttpRequest.DONE) {
-            alert(xhttp.responseText);
+            //alert(xhttp.responseText);
         }
     }
 
@@ -89,7 +89,7 @@ function http4(){
 
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == XMLHttpRequest.DONE) {
-            alert(xhttp.responseText);
+            //alert(xhttp.responseText);
         }
     }
 
