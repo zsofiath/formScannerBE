@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Customizing Axes</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
@@ -16,11 +16,18 @@
       .horisontal-button-row {
         margin-left: 100px;
       }
+      .myCssClass {
+        background-color: #befabf;
+      }
     </style>
 </head>
 <body>
-<div id="types" class="vertical-button-row"></div>
-<div id="users" class="horisontal-button-row"></div>
+<div id="types" class="vertical-button-row">
+    <button th:each="type: ${types}" th:text="${type.taskTypeName}" class="type_button"></button>
+</div>
+<div id="users" class="horisontal-button-row">
+    <button th:each="user: ${users}" th:text="${user.username}" class="user_button"></button>
+</div>
 <div style="display: flex; margin-left: 100px;">
     <div style="flex: 1;">
         <canvas id="myChart"></canvas>

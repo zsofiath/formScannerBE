@@ -1,36 +1,107 @@
-var buttonBox = document.getElementById('users');
-var buttonBox2 = document.getElementById('types');
+var userButtons = document.getElementsByClassName('user_button');
+var typeButtons = document.getElementsByClassName('type_button');
+
+var users = [];
+var types = [];
+
+const ENDPOINT = "http://localhost:8080/";
 
 
-for (let index = 0; index < 10; index++) {
-    let btn = document.createElement('button');
-    btn.innerHTML = "User "+index;
-    btn.addEventListener('click', function(){
-        alert(btn.innerHTML);
+for(var i = 0; i < userButtons.length; i++){
+    var element = userButtons[i];
+    element.addEventListener('click', function(){
+        if(users.includes(element.innerHTML)) {
+            users.splice(users.indexOf(element.innerHTML), 1);
+            element.setAttribute( 'class', '' );
+        } else {
+            users.push(element.innerHTML);
+            http();            
+            element.setAttribute( 'class', 'myCssClass' );
+        }
     });
-    buttonBox.appendChild(btn);
 }
 
-for (let index = 0; index < 12; index++) {
-    let btn = document.createElement('button');
-    btn.innerHTML = "Type "+index;
-    btn.addEventListener('click', function(){
-        alert(btn.innerHTML);
+for(var i = 0; i < typeButtons.length; i++){
+    var element = typeButtons[i];
+    element.addEventListener('click', function(){
+        if(types.includes(element.innerHTML)) {
+            types.splice(types.indexOf(element.innerHTML), 1);
+            element.setAttribute( 'class', '' );
+        } else {
+            types.push(element.innerHTML);
+            http();            
+            element.setAttribute( 'class', 'myCssClass' );
+        }
     });
-    buttonBox2.appendChild(btn);
 }
 
 function http(){
+    http1();
+    http2();
+    http3();
+    http4();
+}
+
+function http1(){
     var xhttp = new XMLHttpRequest();
 
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-            alert(xhr.responseText);
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == XMLHttpRequest.DONE) {
+            alert(xhttp.responseText);
         }
     }
 
-    xhttp.open("GET", ENDPOINT+"save-usage", true);
+    xhttp.open("GET", ENDPOINT+"task-durations"+BuildParams(), true);
     xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify(USAGE_PACKAGE));
-    USAGE_PACKAGE.eventList = [];
+    xhttp.send();
+
+}
+function http2(){
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == XMLHttpRequest.DONE) {
+            alert(xhttp.responseText);
+        }
+    }
+
+    xhttp.open("GET", ENDPOINT+"opened-closed"+BuildParams(), true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send();
+
+}
+function http3(){
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == XMLHttpRequest.DONE) {
+            alert(xhttp.responseText);
+        }
+    }
+
+    xhttp.open("GET", ENDPOINT+"idle-active"+BuildParams(), true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send();
+
+}
+function http4(){
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == XMLHttpRequest.DONE) {
+            alert(xhttp.responseText);
+        }
+    }
+
+    xhttp.open("GET", ENDPOINT+"task-fields"+BuildParams(), true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send();
+
+}
+
+function BuildParams(){
+    var u = users.join(',');
+    var t = types.join(',');
+
+    return '?users='+u+'&tasktypes='+t;
 }
