@@ -22,6 +22,7 @@ for(var i = 0; i < userButtons.length; i++){
         if(users.includes(element.innerHTML)) {
             users.splice(users.indexOf(element.innerHTML), 1);
             element.setAttribute( 'class', '' );
+            http();
         } else {
             users.push(element.innerHTML);
             http();            
@@ -154,7 +155,7 @@ function http3(){
 
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == XMLHttpRequest.DONE) {
-            //alert(xhttp.responseText);
+
             let data = formatresponse(xhttp.responseText);
             chart3Label = data.labels;
             chart3Value = data.values;
@@ -165,13 +166,13 @@ function http3(){
             
                 // The data for our dataset
                 data: {
-                    labels: chart4Label,
+                    labels: chart3Label,
                     datasets: [{
                         label: 'Ratio of idle and active times',
                         backgroundColor: [info, rest],
                         borderColor: stroke,
                         borderWidth:1,
-                        data: chart4Value
+                        data: chart3Value
                     }]
                 },
             
@@ -202,13 +203,13 @@ function http4(){
             
                 // The data for our dataset
                 data: {
-                    labels: chart3Label,
+                    labels: chart4Label,
                     datasets: [{
                         label: 'Number of actions on <Selected> task type fileds',
                         backgroundColor: rest,
                         borderColor: stroke,
                         borderWidth:1,
-                        data: chart3Value
+                        data: chart4Value
                     }]
                 },
             

@@ -57,18 +57,31 @@ public class PresentationController {
 
     @RequestMapping("/idle-active")
     public String getIdleActive(@RequestParam String users, @RequestParam String tasktypes) {
-        return "{\n" +
-                "    \"idle\":100,\n" +
-                "    \"active\":10\n" +
-                "}\n";
+        List<String[]> data = taskRepository.getIdleActive("");
+        JSONObject json = new JSONObject();
+
+            json.put("idle", data.get(0)[0]);
+            json.put("active", data.get(0)[1]);
+
+
+        return json.toString();
     }
 
     @RequestMapping("/task-fields")
     public String getTaskFields(@RequestParam String users, @RequestParam String tasktypes) {
-        return "{\n" +
-                "    \"field1\":100,\n" +
-                "    \"field2\":10,\n" +
-                "    \"fieldN\":200\n" +
-                "}\n";
+        if(tasktypes.split(",").length == 1 && tasktypes != "") {
+            List<String[]> data = fieldRepository.getFields(taskTypeRepository.findByName(tasktypes).getId());
+            JSONObject json = new JSONObject();
+
+            for (int i = 0; i < data.size(); i++) {
+                String[] actualValue = data.get(i);
+                String type = actualValue[0];
+                String val = actualValue[1];
+                json.put(type, val);
+            }
+
+            return json.toString();
+        }
+        else return "";
     }
 }
