@@ -27,4 +27,9 @@ public interface TaskRepository extends CrudRepository<Task, Integer> {
 
     @Query(value = "SELECT * FROM temp_storage.task where id = :taskid", nativeQuery = true)
     public List<Task> getTaskById(@Param("taskid") String taskid);
+
+    @Query(value = "SELECT user.username, avg(idle_minutes+active_minutes) FROM temp_storage.task \n" +
+            "            left join temp_storage.user on temp_storage.user.id = temp_storage.task.user_id\n" +
+            "            where task_type_id = :tasktypeid group by user_id", nativeQuery = true)
+    public List<Object[]> getTaskTimesForUsers(@Param("tasktypeid") int tasktypeid);
 }

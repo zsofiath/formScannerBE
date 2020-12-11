@@ -1,8 +1,10 @@
 package com.example.springboot;
 
+import com.example.springboot.computeOptimum.OptimumComputer;
 import com.example.springboot.database.UsageRepository;
 import com.example.springboot.database.permStorage.*;
 import com.example.springboot.transformation.Transformation;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,9 +28,8 @@ public class DistributionController {
 
     @RequestMapping(path = "/get-user")
     public String transform() throws ParseException {
-        Transformation T = new Transformation(usageRepository, taskRepository, userRepository, taskTypeRepository, fieldRepository, fieldEventRepository);
-        T.createTasks();
-        T.setClosedTasks();
+        OptimumComputer O = new OptimumComputer(usageRepository, taskRepository, userRepository, taskTypeRepository, fieldRepository, fieldEventRepository);
+        O.getTypeAverageForEachUser(1);
         return "username";
     }
 }
