@@ -49,10 +49,15 @@ public class PresentationController {
 
     @RequestMapping("opened-closed")
     public String getOpenedClosedRatio(@RequestParam String users, @RequestParam String tasktypes) {
-        return "{\n" +
-                "    \"opened\":100,\n" +
-                "    \"closed\":10\n" +
-                "}\n";
+
+        int openedTask = taskRepository.getOpenTimes();
+        int closedTask = taskRepository.getClosedTimes();
+        JSONObject json = new JSONObject();
+
+        json.put("opened", openedTask);
+        json.put("closed", closedTask);
+
+        return json.toString();
     }
 
     @RequestMapping("/idle-active")

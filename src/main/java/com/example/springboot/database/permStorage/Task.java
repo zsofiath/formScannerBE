@@ -15,6 +15,15 @@ public class Task {
     private Date endTime;
     private int activeMinutes;
     private double idleMinutes;
+    private boolean closed;
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
+    }
 
     public String getId() {
         return id;

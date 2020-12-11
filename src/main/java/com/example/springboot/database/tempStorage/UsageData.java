@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -138,10 +139,15 @@ public class UsageData {
     private Date createDate(String str) throws ParseException {
         String[] strArray = str.split("T", 2);
         DateFormat format = new SimpleDateFormat("YYYY-MM-dd kk:mm:ss.S");
-        format.setTimeZone(TimeZone.getTimeZone("Europe/Budapest"));
+        //format.setTimeZone(TimeZone.getTimeZone("Europe/Budapest"));
         Date date = format.parse(strArray[0]+" "+strArray[1]);
 
-        return date;
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.YEAR, 1);
+        Date newDate = c.getTime();
+
+        return newDate;
     }
     public String getUsername() {
         return username;

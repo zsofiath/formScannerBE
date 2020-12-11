@@ -10,6 +10,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,60 +23,109 @@ public class Transformation {
     private UserRepository userRepository;
     private TaskTypeRepository taskTypeRepository;
     private FieldRepository fieldRepository;
+    private FieldEventRepository fieldEventRepository;
 
     public Transformation(UsageRepository usageRepository,
                           TaskRepository taskRepository,
                           UserRepository userRepository,
                           TaskTypeRepository taskTypeRepository,
-                          FieldRepository fieldRepository) {
+                          FieldRepository fieldRepository,
+                          FieldEventRepository fieldEventRepository) {
         this.usageRepository = usageRepository;
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
         this.taskTypeRepository = taskTypeRepository;
         this.fieldRepository = fieldRepository;
+        this.fieldEventRepository = fieldEventRepository;
     }
-    //public List<FieldEvent> createFieldEvents(){}
+    public void createFieldEvents(){
+
+    }
     public void createFields(String taskID) {
         List<Object[]> usages = usageRepository.getTaskActions_inputEvents(taskID);
         for (Object[] row : usages) {
-           Field f = fieldRepository.findBy((String)row[1], taskTypeRepository.findByName((String)row[0]).getId());
+            String name = (String)row[1];
+            int taskTypeId = taskTypeRepository.findByName((String)row[0]).getId();
+           Field f = fieldRepository.findBy(name, taskTypeId);
            if(f == null) {
                Field ff = new Field();
                ff.setFieldName((String)row[1]);
                ff.setTaskType(taskTypeRepository.findByName((String)row[0]));
 
                fieldRepository.save(ff);
+               f = fieldRepository.findBy(name, taskTypeId);
            }
+           FieldEvent fe = new FieldEvent();
+            fe.setEvent((String)row[2]);
+            fe.setField(f);
+            List<Task> task = taskRepository.getTaskById(taskID);
+            fe.setTask(task.get(0));
 
+            fieldEventRepository.save(fe);
         }
     }
     //public List<MouseStroke> createMouseStroke(){}
     public void createTasks() throws ParseException {
         List<Object[]> dates = usageRepository.getStartEndAndTime();
-        for (Object[] dateRow :
+        for (Object[] dataRow :
                 dates) {
-            Task T = new Task();
-            T.setId((String)dateRow[0]);
-            T.setStartTime((Date)dateRow[1]);
-            T.setEndTime((Date)dateRow[2]);
-            T.setTaskType(taskTypeRepository.findByName((String)dateRow[3]));
-            T.setUser(userRepository.findByName((String)dateRow[4]));
-
-
-            createFields((String)dateRow[0]);
-
-            double idleTime = 0;
-            List<UsageData> usages = usageRepository.getTaskActions((String)dateRow[0]);
-            for (int i = 0; i < usages.size()-4; i++) {
-                if(isIdle(usages, i)) {
-                    idleTime += computeIdleMinutes((UsageData)usages.get(i+1), (UsageData)usages.get(i+2));
-                }
+            List<Task> currentTask = taskRepository.getTaskById((String)dataRow[0]);
+            if(currentTask.size() > 0){
+                updateTask(dataRow, currentTask.get(0));
             }
-            T.setIdleMinutes(idleTime);
-            T.setActiveMinutes((int)(computeActiveMinutes((Date)dateRow[1], (Date)dateRow[2]) - idleTime));
-            taskRepository.save(T);
+            else {
+                createTask(dataRow);
+            }
+        }
+    }
+
+    public void setClosedTasks(){
+        Iterable<Task> tasks = taskRepository.findAll();
+
+        for (Task task :
+                tasks) {
+            Instant instant = Instant.now();
+            long now = instant.toEpochMilli();
+            Date taskTime = task.getEndTime();
+            long differenceInMinutes = ((now - taskTime.getTime())/1000)/60;
+            if((((differenceInMinutes))/60)/60 > 24) {
+                task.setClosed(true);
+                taskRepository.save(task);
+            }
         }
 
+    }
+
+    private void createTask(Object[] dataRow){
+        Task T = new Task();
+        T.setId((String)dataRow[0]);
+        T.setStartTime((Date)dataRow[1]);
+        T.setEndTime((Date)dataRow[2]);
+        T.setTaskType(taskTypeRepository.findByName((String)dataRow[3]));
+        T.setUser(userRepository.findByName((String)dataRow[4]));
+        T.setClosed(false);
+        taskRepository.save(T);
+        createFields((String)dataRow[0]);
+        computeIdleAndActiveTimes(dataRow, T);
+    }
+
+    private void computeIdleAndActiveTimes(Object[] dataRow, Task T){
+        double idleTime = 0;
+        List<UsageData> usages = usageRepository.getTaskActions((String)dataRow[0]);
+        for (int i = 0; i < usages.size()-4; i++) {
+            if(isIdle(usages, i)) {
+                idleTime += computeIdleMinutes((UsageData)usages.get(i+1), (UsageData)usages.get(i+2));
+            }
+        }
+        T.setIdleMinutes(idleTime);
+        T.setActiveMinutes((int)(computeActiveMinutes((Date)dataRow[1], (Date)dataRow[2]) - idleTime));
+    }
+
+    private void updateTask(Object[] dataRow, Task T){
+        T.setEndTime((Date)dataRow[2]);
+        computeIdleAndActiveTimes(dataRow, T);
+        taskRepository.save(T);
+        createFields((String)dataRow[0]);
     }
 
     private double computeIdleMinutes(UsageData idleStartEvent, UsageData idleEndEvent) {

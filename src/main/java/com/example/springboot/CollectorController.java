@@ -22,6 +22,8 @@ public class CollectorController {
     @Autowired
     private FieldRepository fieldRepository;
     @Autowired
+    private FieldEventRepository fieldEventRepository;
+    @Autowired
     private UsageRepository usageRepository;
     @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
     @PostMapping(path = "/save-usage", consumes = "application/json", produces = "application/json")
@@ -51,8 +53,9 @@ public class CollectorController {
 
     @RequestMapping(path = "/t")
     public String transform() throws ParseException {
-        Transformation T = new Transformation(usageRepository, taskRepository, userRepository, taskTypeRepository, fieldRepository);
+        Transformation T = new Transformation(usageRepository, taskRepository, userRepository, taskTypeRepository, fieldRepository, fieldEventRepository);
         T.createTasks();
+        T.setClosedTasks();
         return "";
     }
 }
