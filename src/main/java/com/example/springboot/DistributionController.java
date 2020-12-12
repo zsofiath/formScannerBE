@@ -29,7 +29,7 @@ public class DistributionController {
     @RequestMapping(path = "/get-user")
     public String transform() throws ParseException {
         OptimumComputer O = new OptimumComputer(usageRepository, taskRepository, userRepository, taskTypeRepository, fieldRepository, fieldEventRepository);
-        O.getTypeAverageForEachUser(1);
-        return "username";
+        String username = O.getPrediction(1);
+        return username;
     }
 }
