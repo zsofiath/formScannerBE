@@ -6,7 +6,22 @@ import java.util.Date;
 @Entity
 public class Task {
     @Id
-    private String id;
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private int id;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    private String taskId;
     @ManyToOne
     private User user;
     @ManyToOne
@@ -23,14 +38,6 @@ public class Task {
 
     public void setClosed(boolean closed) {
         this.closed = closed;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public User getUser() {

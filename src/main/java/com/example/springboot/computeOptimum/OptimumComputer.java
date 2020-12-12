@@ -49,18 +49,22 @@ public class OptimumComputer {
         }
     }
 
-    public int getUsersCurrentTaskType(int userId){
+    public Integer getUsersCurrentTaskType(int userId){
         List<Object[]>  type = taskRepository.getUsersCurrentTask(userId);
+        if(type.size() == 0) return null;
         return (int)type.get(0)[0];
     }
 
     public void getCurrentTaskTypeAverages(int taskType) throws ParseException {
         int i = 0;
         for (int userId: this.userids) {
-            int typeId = getUsersCurrentTaskType(userId);
+            Integer typeId = getUsersCurrentTaskType(userId);
 
-            double currentTaskTime = taskRepository.getOpenTaskTimesForUser(typeId, userId);
-            this.times.set(i, this.times.get(i)+currentTaskTime);
+            if (typeId != null) {
+                double currentTaskTime = taskRepository.getOpenTaskTimesForUser(typeId, userId);
+                this.times.set(i, this.times.get(i)+currentTaskTime);
+            }
+
             int modifications = getFieldModificationsOfTaskType(taskType, userId);
 
             this.times.set(i, times.get(i)+modifications);

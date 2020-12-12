@@ -27,8 +27,11 @@ public interface TaskRepository extends CrudRepository<Task, Integer> {
     @Query(value = "SELECT count(id) FROM temp_storage.task where closed = 1", nativeQuery = true)
     public int getClosedTimes();
 
-    @Query(value = "SELECT * FROM temp_storage.task where id = :taskid", nativeQuery = true)
+    @Query(value = "SELECT * FROM temp_storage.task where task_id = :taskid", nativeQuery = true)
     public List<Task> getTaskById(@Param("taskid") String taskid);
+
+    @Query(value = "SELECT * FROM temp_storage.task where id = :taskid and user_id = :userid", nativeQuery = true)
+    public List<Task> getTaskByIdUser(@Param("taskid") String taskid, @Param("userid") int userid);
 
     @Query(value = "SELECT user.username, avg(idle_minutes+active_minutes), user.id FROM temp_storage.task \n" +
             "            left join temp_storage.user on temp_storage.user.id = temp_storage.task.user_id\n" +
@@ -45,7 +48,7 @@ public interface TaskRepository extends CrudRepository<Task, Integer> {
             "where user_id=:userid and closed=0", nativeQuery = true)
     public List<Object[]> getUsersCurrentTask(@Param("userid") int userid);
 
-    @Query(value = "SELECT id, end_time FROM temp_storage.task where task_type_id=:taskType and user_id=:userId", nativeQuery = true)
+    @Query(value = "SELECT task_id, end_time FROM temp_storage.task where task_type_id=:taskType and user_id=:userId", nativeQuery = true)
     public ArrayList<Object[]> getTaskIDsWhere(@Param("taskType") int taskType, @Param("userId") int userId);
 
     @Query(value = "SELECT count(fe.id) FROM temp_storage.field_event fe\n" +

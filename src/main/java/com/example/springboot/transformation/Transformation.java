@@ -69,7 +69,8 @@ public class Transformation {
         List<Object[]> dates = usageRepository.getStartEndAndTime();
         for (Object[] dataRow :
                 dates) {
-            List<Task> currentTask = taskRepository.getTaskById((String)dataRow[0]);
+            User u = userRepository.findByName((String) dataRow[4]);
+            List<Task> currentTask = taskRepository.getTaskByIdUser((String)dataRow[0], u.getId());
             if(currentTask.size() > 0){
                 updateTask(dataRow, currentTask.get(0));
             }
@@ -98,13 +99,16 @@ public class Transformation {
 
     private void createTask(Object[] dataRow){
         Task T = new Task();
-        T.setId((String)dataRow[0]);
+        T.setTaskId((String)dataRow[0]);
         T.setStartTime((Date)dataRow[1]);
         T.setEndTime((Date)dataRow[2]);
         T.setTaskType(taskTypeRepository.findByName((String)dataRow[3]));
         T.setUser(userRepository.findByName((String)dataRow[4]));
         T.setClosed(false);
         taskRepository.save(T);
+
+        System.out.println((String)dataRow[0]);
+
         createFields((String)dataRow[0]);
         computeIdleAndActiveTimes(dataRow, T);
     }
