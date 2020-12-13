@@ -15,11 +15,11 @@ public class VisualizationController {
     @Autowired
     private TaskTypeRepository taskTypeRepository;
 
-    @GetMapping("/greeting")
+    @GetMapping("/visualisation")
     public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
 
         model.addAttribute("types", taskTypeRepository.findAll());
         model.addAttribute("users", userRepository.findAll());
-        return "greeting";
+        return "visualisation";
     }
 }
